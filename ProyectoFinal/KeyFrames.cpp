@@ -312,6 +312,7 @@ int main()
 	Model ParedA((char*)"ModelosAcuario/ParedA.obj");
 	Model RocasA((char*)"ModelosAcuario/RocasA.obj");
 	Model VidrioA((char*)"ModelosAcuario/VidrioA.obj");
+	Model VidrioAF((char*)"ModelosAcuario/VidrioAF.obj");
 
 	// Modelos Polar
 	Model AguaP((char*)"ModelosPolar/AguaP.obj");
@@ -799,16 +800,22 @@ int main()
 		// Volcan
 		drawModelWithTexture(Volcan, texVolcan);
 
-		// Vidrio
-		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
-		drawModelWithTexture(VidrioA, texVidrio);
-		drawModelWithTexture(VidrioF, texVidrio);
-
 		// Agua
-		drawModelWithTexture(AguaA, texAgua);
 		drawModelWithTexture(AguaP, texAgua);
 		drawModelWithTexture(AguaJ, texAgua);
 		drawModelWithTexture(AguaF, texAgua);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
+
+		drawModelWithTexture(AguaA, texAgua);
+
+		// Vidrio
+		glUniform1f(glGetUniformLocation(lightingShader.Program, "alpha"), 0.5f);
+		drawModelWithTexture(VidrioA, texVidrio);
+		drawModelWithTexture(VidrioAF, texVidrio);
+		drawModelWithTexture(VidrioF, texVidrio);
 
 		glDisable(GL_BLEND);
 

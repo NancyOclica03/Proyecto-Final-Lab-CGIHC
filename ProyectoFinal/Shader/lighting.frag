@@ -79,7 +79,8 @@ void main()
     float alpha = (transparency == 1) ? 0.4 : 1.0;
 
     // Combinar iluminación y textura
-    color = vec4(result * texColor.rgb, texColor.a * alpha);
+    //color = vec4(result * texColor.rgb, texColor.a * alpha);
+    color = vec4(texColor.rgb * 0.8, texColor.a * alpha);
 
     // Evitar zonas transparentes invisibles
     if (color.a < 0.1 && transparency == 1)
@@ -96,7 +97,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
     // ?? Balance de intensidad
-    vec3 ambient = light.ambient * 0.3;  // menos luz ambiente
+    vec3 ambient = light.ambient * 0.2;  // menos luz ambiente
     vec3 diffuse = light.diffuse * diff * 0.8;
     vec3 specular = light.specular * spec * 0.5;
 
