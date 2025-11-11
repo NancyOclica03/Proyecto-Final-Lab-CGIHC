@@ -1,6 +1,7 @@
 #version 330 core
 
-#define NUMBER_OF_POINT_LIGHTS 1
+// Define el número máximo de luces puntuales que se van a usar en la escena.
+#define NUMBER_OF_POINT_LIGHTS 22
 
 struct Material
 {
@@ -46,7 +47,7 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 
-out vec4 color;
+out vec4 FragColor;
 
 uniform vec3 viewPos;
 uniform DirLight dirLight;
@@ -55,12 +56,15 @@ uniform SpotLight spotLight;
 uniform Material material;
 uniform int transparency;
 uniform vec2 textureScale;
+uniform vec3 lightColor;
 
-// Function prototypes
+
+// Prototipo de funciones
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
+// Función Principal
 void main()
 {
     vec3 norm = normalize(Normal);
@@ -79,11 +83,11 @@ void main()
     float alpha = (transparency == 1) ? 0.4 : 1.0;
 
     // Combinar iluminación y textura
-    //color = vec4(result * texColor.rgb, texColor.a * alpha);
-    color = vec4(texColor.rgb * 0.8, texColor.a * alpha);
+    FragColor = vec4(result * texColor.rgb, texColor.a * alpha);
+    //color = vec4(texColor.rgb * 0.8, texColor.a * alpha);
 
     // Evitar zonas transparentes invisibles
-    if (color.a < 0.1 && transparency == 1)
+    if (FragColor.a < 0.1 && transparency == 1)
         discard;
 }
 
